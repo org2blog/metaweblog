@@ -59,12 +59,12 @@ system. Uses wp.getPageList."
 		       user-name
 		       password))
 
-(defun metaweblog-new-post 
+(defun metaweblog-new-post
   (blog-xmlrpc user-name password blog-id content publish)
   "Sends a new post to the blog. If PUBLISH is non-nil, the post is
 published, otherwise it is saved as draft. CONTENT will be an alist
 title, description, categories, and date as keys (string-ified) mapped to the
-title of the post, post contents, list of categories, and date respectively." 
+title of the post, post contents, list of categories, and date respectively."
   (let ((post-title (cdr (assoc "title" content)))
 	(post-description (cdr (assoc "description" content)))
 	(post-categories (cdr (assoc "categories" content)))
@@ -78,8 +78,8 @@ title of the post, post contents, list of categories, and date respectively."
    blog-xmlrpc
    `((methodCall
       nil
-      (methodName nil "metaWeblog.newPost") 
-      (params nil 
+      (methodName nil "metaWeblog.newPost")
+      (params nil
 	      (param nil (value nil (string nil ,blog-id)))
 	      (param nil (value nil (string nil ,user-name)))
 	      (param nil (value nil (string nil ,password)))
@@ -102,24 +102,24 @@ title of the post, post contents, list of categories, and date respectively."
 					 (name nil "dateCreated")
 					 (dateTime.iso8601 nil ,post-date))
 				 ,(when post-tags
-				    `(member nil 
+				    `(member nil
 					     (name nil "mt_keywords")
 					     (value nil
 						    (array
 						     nil
-						     ,(append 
+						     ,(append
 						       '(data nil)
 						       (mapcar
 							(lambda(f)
 							  `(value nil (string nil ,f)))
 							post-tags))))))
 				 ,(when post-categories
-				    `(member nil 
+				    `(member nil
 					     (name nil "categories")
 					     (value nil
 						    (array
 						     nil
-						     ,(append 
+						     ,(append
 						       '(data nil)
 						       (mapcar
 							(lambda(f)
@@ -132,14 +132,14 @@ title of the post, post contents, list of categories, and date respectively."
   "Sends a new page to the blog. If PUBLISH is non-nil, the post is
 published, otherwise it is saved as draft. CONTENT will be an alist
 title, description, categories, and date as keys (string-ified) mapped to the
-title of the post, post contents, list of categories, and date respectively." 
+title of the post, post contents, list of categories, and date respectively."
   (let ((post-title (cdr (assoc "title" content)))
 	(post-description (cdr (assoc "description" content)))
 	(post-categories (cdr (assoc "categories" content)))
 	(post-tags (cdr (assoc "tags" content)))
 	(post-excerpt (cdr (assoc "excerpt" content)))
         (post-permalink (cdr (assoc "permalink" content)))
-        (post-parent (cdr (assoc "parent" content)))        
+        (post-parent (cdr (assoc "parent" content)))
 	(post-date (cdr (assoc "date" content))))
   ;;; since xml-rpc-method-call entitifies the HTML text in the post
   ;;; we've to use raw
@@ -147,8 +147,8 @@ title of the post, post contents, list of categories, and date respectively."
    blog-xmlrpc
    `((methodCall
       nil
-      (methodName nil "wp.newPage") 
-      (params nil 
+      (methodName nil "wp.newPage")
+      (params nil
 	      (param nil (value nil (string nil ,blog-id)))
 	      (param nil (value nil (string nil ,user-name)))
 	      (param nil (value nil (string nil ,password)))
@@ -174,24 +174,24 @@ title of the post, post contents, list of categories, and date respectively."
 					 (name nil "dateCreated")
 					 (dateTime.iso8601 nil ,post-date))
 				 ,(when post-tags
-				    `(member nil 
+				    `(member nil
 					     (name nil "mt_keywords")
 					     (value nil
 						    (array
 						     nil
-						     ,(append 
+						     ,(append
 						       '(data nil)
 						       (mapcar
 							(lambda(f)
 							  `(value nil (string nil ,f)))
 							post-tags))))))
 				 ,(when post-categories
-				    `(member nil 
+				    `(member nil
 					     (name nil "categories")
 					     (value nil
 						    (array
 						     nil
-						     ,(append 
+						     ,(append
 						       '(data nil)
 						       (mapcar
 							(lambda(f)
@@ -217,13 +217,13 @@ contents, list of categories, and date respectively."
     (message post-date)
   ;;; since xml-rpc-method-call entitifies the HTML text in the post
   ;;; we've to use raw
-    (xml-rpc-xml-to-response 
+    (xml-rpc-xml-to-response
      (xml-rpc-request
       blog-xmlrpc
       `((methodCall
          nil
-         (methodName nil "wp.editPage") 
-         (params nil 
+         (methodName nil "wp.editPage")
+         (params nil
                  (param nil (value nil (string nil ,blog-id)))
                  (param nil (value nil (string nil ,post-id)))
                  (param nil (value nil (string nil ,user-name)))
@@ -250,24 +250,24 @@ contents, list of categories, and date respectively."
                                             (name nil "dateCreated")
                                             (dateTime.iso8601 nil ,post-date))
                                     ,(when post-tags
-                                       `(member nil 
+                                       `(member nil
                                                 (name nil "mt_keywords")
                                                 (value nil
                                                        (array
                                                         nil
-                                                        ,(append 
+                                                        ,(append
                                                           '(data nil)
                                                           (mapcar
                                                            (lambda(f)
                                                              `(value nil (string nil ,f)))
                                                            post-tags))))))
                                     ,(when post-categories
-                                       `(member nil 
+                                       `(member nil
                                                 (name nil "categories")
                                                 (value nil
                                                        (array
                                                         nil
-                                                        ,(append 
+                                                        ,(append
                                                           '(data nil)
                                                           (mapcar
                                                            (lambda(f)
@@ -275,11 +275,11 @@ contents, list of categories, and date respectively."
                                                            post-categories)))))))))
                  (param nil (value nil (boolean nil ,(if publish "1" "0")))))))))))
 
-(defun metaweblog-edit-post 
+(defun metaweblog-edit-post
   (blog-xmlrpc user-name password post-id content publish)
-  "Edits an exiting post, if post-id is given. If PUBLISH is non-nil, the 
-post is published, otherwise it is saved as draft. CONTENT will be an alist 
-title, description, categories, and date as keys (string-ified) mapped to the 
+  "Edits an exiting post, if post-id is given. If PUBLISH is non-nil, the
+post is published, otherwise it is saved as draft. CONTENT will be an alist
+title, description, categories, and date as keys (string-ified) mapped to the
 title of the post, post contents, list of categories, and date respectively."
   (let ((post-title (cdr (assoc "title" content)))
 	(post-description (cdr (assoc "description" content)))
@@ -295,8 +295,8 @@ title of the post, post contents, list of categories, and date respectively."
    blog-xmlrpc
    `((methodCall
       nil
-      (methodName nil "metaWeblog.editPost") 
-      (params nil 
+      (methodName nil "metaWeblog.editPost")
+      (params nil
 	      (param nil (value nil (string nil ,post-id)))
 	      (param nil (value nil (string nil ,user-name)))
 	      (param nil (value nil (string nil ,password)))
@@ -319,24 +319,24 @@ title of the post, post contents, list of categories, and date respectively."
 				 	 (name nil "dateCreated")
 				 	 (dateTime.iso8601 nil ,post-date))
 				 ,(when post-tags
-				    `(member nil 
+				    `(member nil
 					     (name nil "mt_keywords")
 					     (value nil
 						    (array
 						     nil
-						     ,(append 
+						     ,(append
 						       '(data nil)
 						       (mapcar
 							(lambda(f)
 							  `(value nil (string nil ,f)))
 							post-tags))))))
 				 ,(when post-categories
-				    `(member nil 
+				    `(member nil
 					     (name nil "categories")
 					     (value nil
 						    (array
 						     nil
-						     ,(append 
+						     ,(append
 						       '(data nil)
 						       (mapcar
 							(lambda(f)
@@ -346,7 +346,7 @@ title of the post, post contents, list of categories, and date respectively."
 
 (defun metaweblog-get-post (blog-xmlrpc user-name password post-id)
   "Retrieves a post from the weblog. POST-ID is the id of the post
-which is to be returned"
+which is to be returned.  Can be used with pages as well."
   (xml-rpc-method-call blog-xmlrpc
 		       "metaWeblog.getPost"
 		       post-id
@@ -382,53 +382,59 @@ no. of posts that should be returned."
 		       password
 		       number-of-posts))
 
-(defun get-image-properties (file)
-"Gets the properties of an image file."
-  (let* (image-base64 type name)
+(defun get-file-properties (file)
+  "Gets the properties of a file. Returns an assoc list with
+name - file name
+bits - data of the file as a base64 encoded string
+type - mimetype of file deduced from extension."
+  (let* (base64-str type name)
     (save-excursion
       (save-restriction
-	(with-current-buffer
-            (find-file-noselect file)
+	(with-current-buffer (find-file-noselect file nil t)
+          (fundamental-mode)
 	  (setq name (file-name-nondirectory file))
-	  (setq image-base64 (base64-encode-string (buffer-string)))
-	  (setq type (symbol-name (image-type file)))
+	  (setq base64-str (base64-encode-string (encode-coding-string (buffer-string) 'binary)))
+	  (setq type (mailcap-extension-to-mime (file-name-extension file)))
           (kill-buffer)
-	  (setq fff-image `(("name" . ,name)
-			    ("bits" . ,image-base64)
-			    ("type" . ,(concat "image/" type)))))))
-  fff-image))
+	  (setq file-props `(("name" . ,name)
+                             ("bits" . ,base64-str)
+                             ("type" . ,type))))))
+    file-props))
 
-(defun metaweblog-upload-image (blog-xmlrpc user-name password blog-id image)
-  "Uploads an image to the blog. IMAGE will be an alist name, type, bits, as keys mapped to name of the image, mime type of the image, image data in base 64, respectively." 
-  (let ((image-name (cdr (assoc "name" image)))
-	(image-type (cdr (assoc "type" image)))
-	(image-bits (cdr (assoc "bits" image))))
+(defun metaweblog-upload-file (blog-xmlrpc user-name password blog-id file)
+  "Uploads file to the blog. FILE will be an alist name, type,
+bits, as keys mapped to name of the file, mime type and the
+data."
+  (let ((file-name (cdr (assoc "name" file)))
+	(file-type (cdr (assoc "type" file)))
+	(file-bits (cdr (assoc "bits" file))))
 
-  (xml-rpc-xml-to-response (xml-rpc-request
-   blog-xmlrpc
-   `((methodCall
-      nil
-      (methodName nil "metaWeblog.newMediaObject") 
-      (params nil 
-	      (param nil (value nil (string nil ,blog-id)))
-	      (param nil (value nil (string nil ,user-name)))
-	      (param nil (value nil (string nil ,password)))
-	      (param nil (value nil
-				(struct
-				 nil
-				 (member nil
-					 (name nil "name")
-					 (value nil ,image-name))
-				 (member nil
-					 (name nil "bits")
-					 (base64 nil ,image-bits))
-				 (member nil
-					 (name nil "type")
-					 (value nil ,image-type))
-                                 (member nil
-					 (name nil "overwrite")
-					 (value nil "t")))))
-	      )))))))
+    (xml-rpc-xml-to-response
+     (xml-rpc-request
+      blog-xmlrpc
+      `((methodCall
+         nil
+         (methodName nil "metaWeblog.newMediaObject")
+         (params nil
+                 (param nil (value nil (string nil ,blog-id)))
+                 (param nil (value nil (string nil ,user-name)))
+                 (param nil (value nil (string nil ,password)))
+                 (param nil (value nil
+                                   (struct
+                                    nil
+                                    (member nil
+                                            (name nil "name")
+                                            (value nil ,file-name))
+                                    (member nil
+                                            (name nil "bits")
+                                            (base64 nil ,file-bits))
+                                    (member nil
+                                            (name nil "type")
+                                            (value nil ,file-type))
+                                    (member nil
+                                            (name nil "overwrite")
+                                            (value nil "t")))))
+                 )))))))
 
 
 (provide 'metaweblog)

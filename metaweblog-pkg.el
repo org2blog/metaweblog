@@ -1,3 +1,3 @@
-(define-package "metaweblog" "0.1.1"
+(define-package "metaweblog" "1.0.0"
   "An emacs library to access metaweblog based weblogs"
   '((xml-rpc "1.6.8")))

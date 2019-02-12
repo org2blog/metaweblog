@@ -17,6 +17,9 @@
 
 (require 'xml-rpc)
 
+(defconst metaweblog-version "1.0.1"
+  "Current version of metaweblog.el")
+
 (defun metaweblog-get-categories (blog-xmlrpc user-name password blog-id)
   "Retrieves list of categories from the weblog system"
   (xml-rpc-method-call blog-xmlrpc

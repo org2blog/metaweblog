@@ -1,9 +1,3 @@
 #+TITLE: MetaWeblog
 
-=metaweblog= is an emacs library to access metaweblog based
-weblogs.  It is an extension of the original code written by [[http://www.emacswiki.org/emacs/AshishShukla][Ashish
-Shukla]] available at
-[[http://www.mail-archive.com/gnu-emacs-sources@gnu.org/msg01576.html]].
-
-This code used to reside inside [[https://github.com/punchagan/org2blog][org2blog]], but it has been moved to a
-separate repo upon a [[https://github.com/punchagan/org2blog/issues/52][request]] by [[http://bytebaker.com/][Shrutarshi Basu]].
+[[https://github.com/org2blog/org2blog/blob/master/metaweblog.el][MetaWeblog]] is now a store in the [[https://github.com/org2blog/org2blog][Org2Blog repo.]]
